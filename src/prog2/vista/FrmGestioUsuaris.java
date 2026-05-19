@@ -1,15 +1,51 @@
 package prog2.vista;
 
+import prog2.adaptador.Adaptador;
+
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class FrmGestioUsuaris extends JDialog {
     private JPanel contentPane;
-    private JButton buttonOK;
-    private JButton buttonCancel;
+    private JButton btnTornar;
+    private JButton btnAfegir;
+    private JButton btnVisualitzar;
+    private Adaptador adaptador;
 
-    public FrmGestioUsuaris() {
+    public FrmGestioUsuaris(Adaptador adaptador) {
+        this.adaptador = adaptador;
         setContentPane(contentPane);
-        setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
+        setSize(500, 400);
+        setTitle("Gestió usuaris");
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE); // els JDialogs no és EXIT_ON_CLOSE sinó això
+
+        btnAfegir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                // Creem pestanya d'afegir usuari, la fem modal i la fem visible (en akuest ordre!!)
+                FrmAfegirUsuari frmAfegirUsuari = new FrmAfegirUsuari(adaptador);
+                frmAfegirUsuari.setModal(true);
+                frmAfegirUsuari.setVisible(true);
+                frmAfegirUsuari.setLocationRelativeTo(null); // això la posa al centre de la pantalla
+            }
+        });
+
+        btnVisualitzar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                // Creem pestanya de visualitzar usuaris(amb la llista i el títol), la fem modal i la fem visible (en akuest ordre!!)
+                FrmVisualitzar visualitzarUsuaris = new FrmVisualitzar(adaptador.recuperarUsuaris(), "Usuaris");
+                visualitzarUsuaris.setModal(true);
+                visualitzarUsuaris.setVisible(true);
+                visualitzarUsuaris.setLocationRelativeTo(null); // això la posa al centre de la pantalla
+            }
+        });
+        btnTornar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                dispose();
+            }
+        });
     }
 }
