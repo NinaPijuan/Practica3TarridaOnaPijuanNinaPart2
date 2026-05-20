@@ -21,12 +21,15 @@ public class FrmAfegirUsuari extends JDialog {
     private JLabel etAdreca;
     private Adaptador adaptador;
 
-    public FrmAfegirUsuari(Adaptador adaptador) {
+    public FrmAfegirUsuari(JDialog parent, Adaptador adaptador) {
+        super(parent);
         this.adaptador = adaptador;
         setContentPane(contentPane);
-        setSize(500, 400);
+        setSize(800, 600);
+        setLocationRelativeTo(null);
         setTitle("Afegir usuari");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        getRootPane().setDefaultButton(btnAcceptar);
 
         // BOTÓ ACCEPTAR:
         // de primeres està desactivat
@@ -89,17 +92,14 @@ public class FrmAfegirUsuari extends JDialog {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 try {
-                    boolean estudiant = false;
-                    // Per crear un usuari cal saber si és estudiant o professor
-                    if(chkEstudiant.isSelected()){ estudiant = true; }
                     // Afegim usuari amb el mètode d'adaptador kue ho fa
-                    adaptador.afegirUsuari(txtEmail.getText(), txtNom.getText(), txtAdreca.getText(), estudiant);
-                    JOptionPane.showMessageDialog(null, "Usuari afegit correctament", "", JOptionPane.INFORMATION_MESSAGE);
+                    adaptador.afegirUsuari(txtEmail.getText(), txtNom.getText(), txtAdreca.getText(), chkEstudiant.isSelected());
+                    JOptionPane.showMessageDialog(parent, "Usuari afegit correctament", "", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
                     // CAL REFRESCAR LA LLISTA??
 
                 } catch (BiblioException ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(parent, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
 
             }

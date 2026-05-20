@@ -15,16 +15,23 @@ public class FrmGestioPrestecs extends JDialog {
     private JButton btnVisualitzarNoRetornats;
     private Adaptador adaptador;
 
-    public FrmGestioPrestecs(Adaptador adaptador) {
+    public FrmGestioPrestecs(JFrame parent, Adaptador adaptador) {
+        super(parent);
         this.adaptador = adaptador;
         setContentPane(contentPane);
         setModal(true);
+        setSize(800, 600);
+        setLocationRelativeTo(null);
+        setTitle("Gestió préstecs");
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+
         btnAfegir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                FrmAfegirPrestec frmAfegirPrestec = new FrmAfegirPrestec(adaptador);
-                setModal(true);
-                // ALGO MÉS?
+                FrmAfegirPrestec frmAfegirPrestec = new FrmAfegirPrestec(FrmGestioPrestecs.this, adaptador);
+                frmAfegirPrestec.setModal(true);
+                frmAfegirPrestec.setVisible(true);
             }
         });
         btnRetornar.addActionListener(new ActionListener() {
@@ -36,13 +43,17 @@ public class FrmGestioPrestecs extends JDialog {
         btnVisualitzar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                // KUÈ OBREEEEEEE
+                FrmVisualitzar visualitzarPrestecs = new FrmVisualitzar(adaptador.recuperarPrestecs(), "Préstecs");
+                visualitzarPrestecs.setModal(true);
+                visualitzarPrestecs.setVisible(true);
             }
         });
         btnVisualitzarNoRetornats.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                // KUÈ OBRE
+                FrmVisualitzar visualitzarNoRetornats = new FrmVisualitzar(adaptador.recuperarPrestecsNoRetornats(), "Préstecs no retornats");
+                visualitzarNoRetornats.setModal(true);
+                visualitzarNoRetornats.setVisible(true);
             }
         });
         btnTornar.addActionListener(new ActionListener() {

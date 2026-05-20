@@ -13,10 +13,12 @@ public class FrmGestioExemplars extends JDialog {
     private JButton btnVisualitzar;
     private Adaptador adaptador;
 
-    public FrmGestioExemplars(Adaptador adaptador) {
+    public FrmGestioExemplars(JFrame parent, Adaptador adaptador) {
+        super(parent);
         this.adaptador = adaptador;
         setContentPane(contentPane);
-        setSize(500, 400);
+        setSize(800, 600);
+        setLocationRelativeTo(null);
         setTitle("Gestió exemplars");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE); // els JDialogs no és EXIT_ON_CLOSE sinó això
 
@@ -24,10 +26,9 @@ public class FrmGestioExemplars extends JDialog {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 // Crea pestanya d'afegir exemplar, la fa modal i la fa visible (en akuest ordre!!)
-                FrmAfegirExemplar frmAfegirExemplar = new FrmAfegirExemplar(adaptador);
+                FrmAfegirExemplar frmAfegirExemplar = new FrmAfegirExemplar(FrmGestioExemplars.this, adaptador);
                 frmAfegirExemplar.setModal(true);
                 frmAfegirExemplar.setVisible(true);
-                frmAfegirExemplar.setLocationRelativeTo(null); // això la posa al centre de la pantalla
             }
         });
 
@@ -38,7 +39,6 @@ public class FrmGestioExemplars extends JDialog {
                 FrmVisualitzar visualitzarExemplars = new FrmVisualitzar(adaptador.recuperarExemplars(), "Exemplars");
                 visualitzarExemplars.setModal(true);
                 visualitzarExemplars.setVisible(true);
-                visualitzarExemplars.setLocationRelativeTo(null); // això la posa al centre de la pantalla
             }
         });
 

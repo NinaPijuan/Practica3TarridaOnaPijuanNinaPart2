@@ -13,10 +13,12 @@ public class FrmGestioUsuaris extends JDialog {
     private JButton btnVisualitzar;
     private Adaptador adaptador;
 
-    public FrmGestioUsuaris(Adaptador adaptador) {
+    public FrmGestioUsuaris(JFrame parent, Adaptador adaptador) {
+        super(parent);
         this.adaptador = adaptador;
         setContentPane(contentPane);
-        setSize(500, 400);
+        setSize(800, 600);
+        setLocationRelativeTo(null);
         setTitle("Gestió usuaris");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE); // els JDialogs no és EXIT_ON_CLOSE sinó això
 
@@ -24,10 +26,9 @@ public class FrmGestioUsuaris extends JDialog {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 // Creem pestanya d'afegir usuari, la fem modal i la fem visible (en akuest ordre!!)
-                FrmAfegirUsuari frmAfegirUsuari = new FrmAfegirUsuari(adaptador);
+                FrmAfegirUsuari frmAfegirUsuari = new FrmAfegirUsuari(FrmGestioUsuaris.this, adaptador);
                 frmAfegirUsuari.setModal(true);
                 frmAfegirUsuari.setVisible(true);
-                frmAfegirUsuari.setLocationRelativeTo(null); // això la posa al centre de la pantalla
             }
         });
 
@@ -38,7 +39,6 @@ public class FrmGestioUsuaris extends JDialog {
                 FrmVisualitzar visualitzarUsuaris = new FrmVisualitzar(adaptador.recuperarUsuaris(), "Usuaris");
                 visualitzarUsuaris.setModal(true);
                 visualitzarUsuaris.setVisible(true);
-                visualitzarUsuaris.setLocationRelativeTo(null); // això la posa al centre de la pantalla
             }
         });
         btnTornar.addActionListener(new ActionListener() {

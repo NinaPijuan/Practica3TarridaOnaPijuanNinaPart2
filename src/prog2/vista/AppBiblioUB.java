@@ -59,36 +59,34 @@ public class AppBiblioUB extends JFrame {
         setTitle("AppBiblioUB");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setContentPane(panel);
-        setSize(500, 400);
+        setSize(800, 600);
+        setLocationRelativeTo(null);
 
         btnGestioUsuaris.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 // creem pestanya, la fem modal i la fem visible (en akuest ordre!!)
-                FrmGestioUsuaris gestioUsuaris = new FrmGestioUsuaris(adaptador);
-                gestioUsuaris.setModal(true);
-                gestioUsuaris.setVisible(true);
-                gestioUsuaris.setLocationRelativeTo(null); // la posem al centre
+                FrmGestioUsuaris frmGestioUsuaris = new FrmGestioUsuaris(AppBiblioUB.this, adaptador);
+                frmGestioUsuaris.setModal(true);
+                frmGestioUsuaris.setVisible(true);
             }
         });
 
         btnGestioExemplars.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                FrmGestioExemplars frmGestioExemplars = new FrmGestioExemplars(adaptador); // QUE PASSEM DE PARÀMETRES
+                FrmGestioExemplars frmGestioExemplars = new FrmGestioExemplars(AppBiblioUB.this, adaptador); // QUE PASSEM DE PARÀMETRES
                 frmGestioExemplars.setModal(true);
                 frmGestioExemplars.setVisible(true);
-                frmGestioExemplars.setLocationRelativeTo(null);
             }
         });
 
         btnGestioPrestecs.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                FrmGestioPrestecs gestioPrestecs = new FrmGestioPrestecs(adaptador); // QUE PASSEM DE PARÀMETRES
-                gestioPrestecs.setModal(true);
-                gestioPrestecs.setVisible(true);
-                gestioPrestecs.setLocationRelativeTo(null);
+                FrmGestioPrestecs frmGestioPrestecs = new FrmGestioPrestecs(AppBiblioUB.this, adaptador); // QUE PASSEM DE PARÀMETRES
+                frmGestioPrestecs.setModal(true);
+                frmGestioPrestecs.setVisible(true);
             }
         });
 

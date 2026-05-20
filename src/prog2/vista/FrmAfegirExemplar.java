@@ -25,12 +25,15 @@ public class FrmAfegirExemplar extends JDialog {
 
     // és raro però em penso kue el chkAdmetLlarg no necessita escoltador pk hi ha el mètode
     // chk.isSelected() kue ja funciona
-    public FrmAfegirExemplar(Adaptador adaptador) {
+    public FrmAfegirExemplar(JDialog parent, Adaptador adaptador) {
+        super(parent);
         this.adaptador = adaptador;
         setContentPane(contentPane);
-        setSize(500, 400);
+        setSize(800, 600);
+        setLocationRelativeTo(null);
         setTitle("Afegir exemplar");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        getRootPane().setDefaultButton(btnAcceptar);
 
         // BOTÓ ACCEPTAR:
         // de primeres està desactivat
@@ -94,17 +97,14 @@ public class FrmAfegirExemplar extends JDialog {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 try {
-                    boolean admetPrestecLlarg = false;
-                    if(chkAdmetLlarg.isSelected()){ admetPrestecLlarg = true; }
-                    adaptador.afegirExemplar(txtId.getText(), txtTitol.getText(), txtAutor.getText(), admetPrestecLlarg);
-                    JOptionPane.showMessageDialog(null, "Exemplar afegit correctament", "", JOptionPane.INFORMATION_MESSAGE
-                    );
+                    adaptador.afegirExemplar(txtId.getText(), txtTitol.getText(), txtAutor.getText(), chkAdmetLlarg.isSelected());
+                    JOptionPane.showMessageDialog(parent, "Exemplar afegit correctament", "", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
 
                     // CAL REFRESCAR LA LLISTA??
 
                 } catch (BiblioException ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(parent, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
 
             }

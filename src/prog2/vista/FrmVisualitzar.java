@@ -13,7 +13,8 @@ public class FrmVisualitzar extends JDialog {
 
     public FrmVisualitzar(List llista, String nom) {
         setContentPane(contentPane);
-        setSize(500, 400);
+        setSize(800, 600);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setTitle(nom);
 
@@ -35,3 +36,4 @@ public class FrmVisualitzar extends JDialog {
         });
     }
 }
+
