@@ -37,7 +37,9 @@ public class FrmGestioPrestecs extends JDialog {
         btnRetornar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                // FEM KUE OBRI ALGO KUE VISUALITZI PRESTECS I ES SELECCIONI?
+                FrmRetornarPrestec frmRetornarPrestec = new FrmRetornarPrestec(FrmGestioPrestecs.this, adaptador);
+                frmRetornarPrestec.setModal(true);
+                frmRetornarPrestec.setVisible(true);
             }
         });
         btnVisualitzar.addActionListener(new ActionListener() {

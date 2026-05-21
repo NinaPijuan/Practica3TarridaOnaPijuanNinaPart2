@@ -4,6 +4,7 @@ import prog2.adaptador.Adaptador;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import javax.swing.*;
 
 /*
@@ -90,5 +91,40 @@ public class AppBiblioUB extends JFrame {
             }
         });
 
+
+        btnGuardar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                File fitxer;
+                JFileChooser seleccio = new JFileChooser();
+                int resultat = seleccio.showOpenDialog(AppBiblioUB.this);
+                if (resultat == JFileChooser.APPROVE_OPTION) {
+                    fitxer = seleccio.getSelectedFile();
+                    try {
+                        adaptador.guardaDades(fitxer.toString());
+                        JOptionPane.showMessageDialog(null, "Dades guardades", "", JOptionPane.INFORMATION_MESSAGE);
+                    } catch (BiblioException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        });
+        btnCarregar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                File fitxer;
+                JFileChooser seleccio = new JFileChooser();
+                int resultat = seleccio.showOpenDialog(AppBiblioUB.this);
+                if (resultat == JFileChooser.APPROVE_OPTION) {
+                    fitxer = seleccio.getSelectedFile();
+                    try {
+                        adaptador.carregaDades(fitxer.toString());
+                        JOptionPane.showMessageDialog(null, "Dades carergades", "", JOptionPane.INFORMATION_MESSAGE);
+                    } catch (BiblioException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        });
     }
 }

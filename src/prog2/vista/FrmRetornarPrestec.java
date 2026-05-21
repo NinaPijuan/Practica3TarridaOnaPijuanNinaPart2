@@ -3,6 +3,8 @@ package prog2.vista;
 import prog2.adaptador.Adaptador;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,7 +13,7 @@ public class FrmRetornarPrestec extends JDialog {
     private JButton btnRetornar;
     private JButton btnCancelar;
     private JLabel etPrestecs;
-    private JList lstPrestecsNR;
+    private JList<String> lstPrestecsNR;
 
     private Adaptador adaptador;
 
@@ -28,6 +30,14 @@ public class FrmRetornarPrestec extends JDialog {
 
         btnRetornar.setEnabled(false);
 
+        // POSAR JSCROLLPANEL A LA LLISTA
+        DefaultListModel<String> model = new DefaultListModel<>();
+        model.clear();
+        for (String element : adaptador.recuperarPrestecs()) {
+            model.addElement(element);
+        }
+        lstPrestecsNR.setModel(model);
+
         btnCancelar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -38,8 +48,25 @@ public class FrmRetornarPrestec extends JDialog {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 // retornar prestec + gestionar excepcions amb finestretes
+                try {
+                    adaptador.retornarPrestec(lstPrestecsNR.getSelectedIndex());
+                    JOptionPane.showMessageDialog(parent, "Préstec creat correctament", "", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                } catch (BiblioException e) {
+                    JOptionPane.showMessageDialog(parent, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
+        lstPrestecsNR.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                actualitzarBotoRetornar();
+            }
+        });
+    }
+    // Mètode auxiliar per activar el botó acceptar
+    private void actualitzarBotoRetornar() {
+        btnRetornar.setEnabled(!lstPrestecsNR.isSelectionEmpty());
     }
 }
