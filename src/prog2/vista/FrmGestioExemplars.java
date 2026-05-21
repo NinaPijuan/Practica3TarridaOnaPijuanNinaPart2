@@ -12,16 +12,37 @@ public class FrmGestioExemplars extends JDialog {
     private JButton btnAfegir;
     private JList<String> lstExemplars;
     private JScrollPane scrollPane;
+    private JPanel panelInferior;
+    private JPanel panelSuperior;
+    private JPanel panelBtns;
     private Adaptador adaptador;
 
     public FrmGestioExemplars(JFrame parent, Adaptador adaptador) {
         super(parent);
         this.adaptador = adaptador;
         setContentPane(contentPane);
-        setSize(800, 600);
+        setSize(600, 540);
         setLocationRelativeTo(null);
-        setTitle("Gestió exemplars");
+        setTitle("Gestió d'Exemplars — BiblioUB");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE); // els JDialogs no és EXIT_ON_CLOSE sinó això
+
+        // ESTÈTICA
+        // ── Tema ─────────────────────────────────────────────────────────────
+        contentPane.setBackground(AppBiblioUB.C_PANEL);
+        contentPane.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(3, 0, 0, 0, AppBiblioUB.C_OR),
+                BorderFactory.createEmptyBorder(16, 20, 16, 20)
+        ));
+
+        panelSuperior.setBackground(AppBiblioUB.C_PANEL);
+        panelInferior.setBackground(AppBiblioUB.C_PANEL);
+        panelBtns.setBackground(AppBiblioUB.C_PANEL);
+
+        AppBiblioUB.estilitzarLlista(lstExemplars);
+        AppBiblioUB.estilitzarScrollPane(scrollPane);
+        AppBiblioUB.estilitzarBotoPrimari(btnAfegir, "+ Afegir exemplar");
+        AppBiblioUB.estilitzarBotoCancel(btnTornar);
+        btnTornar.setText("← Tornar");
 
         // mostrar llista des del primer moment
         refrescarLlista();

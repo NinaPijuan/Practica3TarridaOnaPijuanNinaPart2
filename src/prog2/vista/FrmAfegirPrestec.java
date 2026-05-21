@@ -20,6 +20,12 @@ public class FrmAfegirPrestec extends JDialog {
     private JLabel etUsuari;
     private JLabel etExemplar;
     private JCheckBox chkPrestecLlarg;
+    private JPanel panelInferior;
+    private JPanel panelBtns;
+    private JPanel panelSuperior;
+    private JPanel panelUsuari;
+    private JPanel panelExemplar;
+    private JPanel panelChk;
 
     private Adaptador adaptador;
 
@@ -29,11 +35,34 @@ public class FrmAfegirPrestec extends JDialog {
         this.adaptador = adaptador;
         setContentPane(contentPane);
         setModal(true);
-        setSize(800, 600);
+        setSize(460, 300);
         setLocationRelativeTo(null);
         getRootPane().setDefaultButton(btnAcceptar);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setTitle("Afegir préstec");
+        setTitle("Afegir Préstec — BiblioUB");
+
+        // ESTÈTICA
+        // ── Tema ─────────────────────────────────────────────────────────────
+        contentPane.setBackground(AppBiblioUB.C_PANEL);
+        contentPane.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(3, 0, 0, 0, AppBiblioUB.C_OR),
+                BorderFactory.createEmptyBorder(16, 20, 16, 20)
+        ));
+
+        panelSuperior.setBackground(AppBiblioUB.C_PANEL);
+        panelInferior.setBackground(AppBiblioUB.C_PANEL);
+        panelBtns.setBackground(AppBiblioUB.C_PANEL);
+        panelExemplar.setBackground(AppBiblioUB.C_PANEL);
+        panelUsuari.setBackground(AppBiblioUB.C_PANEL);
+        panelChk.setBackground(AppBiblioUB.C_PANEL);
+
+        AppBiblioUB.estilitzarEtiqueta(etExemplar);
+        AppBiblioUB.estilitzarEtiqueta(etUsuari);
+        AppBiblioUB.estilitzarComboBox(cmbExemplar);
+        AppBiblioUB.estilitzarComboBox(cmbUsuari);
+        AppBiblioUB.estilitzarCheckBox(chkPrestecLlarg);
+        AppBiblioUB.estilitzarBotoAcceptar(btnAcceptar);
+        AppBiblioUB.estilitzarBotoCancel(btnCancelar);
 
         btnAcceptar.setEnabled(false);
 

@@ -3,8 +3,6 @@ package prog2.vista;
 import prog2.adaptador.Adaptador;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
@@ -20,6 +18,10 @@ public class FrmGestioPrestecs extends JDialog {
     private JList<String> lstPrestecs;
     private JCheckBox chkNoRetornats;
     private JScrollPane scrollPane;
+    private JPanel panelInferior;
+    private JPanel panelBtns;
+    private JPanel panelSuperior;
+    private JPanel panelChk;
     private Adaptador adaptador;
 
     /* Relació entre posició visual i posició real, ja que el retornar préstec agafa la posició del préstec a la llista
@@ -32,10 +34,31 @@ public class FrmGestioPrestecs extends JDialog {
         super(parent);
         this.adaptador = adaptador;
         setContentPane(contentPane);
-        setSize(800, 600);
+        setSize(680, 540);
         setLocationRelativeTo(null);
-        setTitle("Gestió préstecs");
+        setTitle("Gestió de Préstecs — BiblioUB");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+        // ESTÈTICA
+        // ── Tema ─────────────────────────────────────────────────────────────
+        contentPane.setBackground(AppBiblioUB.C_PANEL);
+        contentPane.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(3, 0, 0, 0, AppBiblioUB.C_OR),
+                BorderFactory.createEmptyBorder(16, 20, 16, 20)
+        ));
+
+        panelInferior.setBackground(AppBiblioUB.C_PANEL);
+        panelBtns.setBackground(AppBiblioUB.C_PANEL);
+        panelSuperior.setBackground(AppBiblioUB.C_PANEL);
+        panelChk.setBackground(AppBiblioUB.C_PANEL);
+
+        AppBiblioUB.estilitzarLlista(lstPrestecs);
+        AppBiblioUB.estilitzarScrollPane(scrollPane);
+        AppBiblioUB.estilitzarBotoPrimari(btnAfegir, "+ Afegir préstec");
+        AppBiblioUB.estilitzarBotoPrimari(btnRetornar, "- Retornar préstec");
+        AppBiblioUB.estilitzarBotoCancel(btnTornar);
+        AppBiblioUB.estilitzarCheckBox(chkNoRetornats);
+        btnTornar.setText("← Tornar");
 
         btnRetornar.setEnabled(false);
 
