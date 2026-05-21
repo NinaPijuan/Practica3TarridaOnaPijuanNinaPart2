@@ -10,7 +10,8 @@ public class FrmGestioExemplars extends JDialog {
     private JPanel contentPane;
     private JButton btnTornar;
     private JButton btnAfegir;
-    private JButton btnVisualitzar;
+    private JList<String> lstExemplars;
+    private JScrollPane scrollPane;
     private Adaptador adaptador;
 
     public FrmGestioExemplars(JFrame parent, Adaptador adaptador) {
@@ -22,6 +23,9 @@ public class FrmGestioExemplars extends JDialog {
         setTitle("Gestió exemplars");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE); // els JDialogs no és EXIT_ON_CLOSE sinó això
 
+        // mostrar llista des del primer moment
+        refrescarLlista();
+
         btnAfegir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -29,16 +33,9 @@ public class FrmGestioExemplars extends JDialog {
                 FrmAfegirExemplar frmAfegirExemplar = new FrmAfegirExemplar(FrmGestioExemplars.this, adaptador);
                 frmAfegirExemplar.setModal(true);
                 frmAfegirExemplar.setVisible(true);
-            }
-        });
 
-        btnVisualitzar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                // Creem pestanya de visualitzar exemplars(amb llista i títol), la fem modal i la fem visible (en akuest ordre!!)
-                FrmVisualitzar visualitzarExemplars = new FrmVisualitzar(adaptador.recuperarExemplars(), "Exemplars");
-                visualitzarExemplars.setModal(true);
-                visualitzarExemplars.setVisible(true);
+                // Refrescar llista
+                refrescarLlista();
             }
         });
 
@@ -50,5 +47,13 @@ public class FrmGestioExemplars extends JDialog {
         });
     }
 
+    // Mètode per refrescar
+    private void refrescarLlista() {
+        DefaultListModel<String> model = new DefaultListModel<>();
+        for (String element : adaptador.recuperarExemplars()) {
+            model.addElement(element);
+        }
+        lstExemplars.setModel(model);
+    }
 
 }

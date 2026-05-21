@@ -97,14 +97,14 @@ public class AppBiblioUB extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 File fitxer;
                 JFileChooser seleccio = new JFileChooser();
-                int resultat = seleccio.showOpenDialog(AppBiblioUB.this);
+                int resultat = seleccio.showSaveDialog(AppBiblioUB.this);
                 if (resultat == JFileChooser.APPROVE_OPTION) {
                     fitxer = seleccio.getSelectedFile();
                     try {
                         adaptador.guardaDades(fitxer.toString());
-                        JOptionPane.showMessageDialog(null, "Dades guardades", "", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(AppBiblioUB.this, "Dades guardades", "", JOptionPane.INFORMATION_MESSAGE);
                     } catch (BiblioException ex) {
-                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(AppBiblioUB.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
@@ -119,9 +119,9 @@ public class AppBiblioUB extends JFrame {
                     fitxer = seleccio.getSelectedFile();
                     try {
                         adaptador.carregaDades(fitxer.toString());
-                        JOptionPane.showMessageDialog(null, "Dades carergades", "", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(AppBiblioUB.this, "Dades carergades", "", JOptionPane.INFORMATION_MESSAGE);
                     } catch (BiblioException ex) {
-                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(AppBiblioUB.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }

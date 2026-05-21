@@ -10,7 +10,8 @@ public class FrmGestioUsuaris extends JDialog {
     private JPanel contentPane;
     private JButton btnTornar;
     private JButton btnAfegir;
-    private JButton btnVisualitzar;
+    private JList<String> lstUsuaris;
+    private JScrollPane scrollPane;
     private Adaptador adaptador;
 
     public FrmGestioUsuaris(JFrame parent, Adaptador adaptador) {
@@ -22,6 +23,9 @@ public class FrmGestioUsuaris extends JDialog {
         setTitle("Gestió usuaris");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE); // els JDialogs no és EXIT_ON_CLOSE sinó això
 
+        // mostrar llista des del primer moment
+        refrescarLlista();
+
         btnAfegir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -29,23 +33,26 @@ public class FrmGestioUsuaris extends JDialog {
                 FrmAfegirUsuari frmAfegirUsuari = new FrmAfegirUsuari(FrmGestioUsuaris.this, adaptador);
                 frmAfegirUsuari.setModal(true);
                 frmAfegirUsuari.setVisible(true);
+
+                // quan torna (el dialog s'ha tancat), refrescar llista:
+                refrescarLlista();
             }
         });
 
-        btnVisualitzar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                // Creem pestanya de visualitzar usuaris(amb la llista i el títol), la fem modal i la fem visible (en akuest ordre!!)
-                FrmVisualitzar visualitzarUsuaris = new FrmVisualitzar(adaptador.recuperarUsuaris(), "Usuaris");
-                visualitzarUsuaris.setModal(true);
-                visualitzarUsuaris.setVisible(true);
-            }
-        });
         btnTornar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 dispose();
             }
         });
+    }
+
+    // Mètode per refrescar la llista
+    private void refrescarLlista() {
+        DefaultListModel<String> model = new DefaultListModel<>();
+        for(String element : adaptador.recuperarUsuaris()) {
+            model.addElement(element);
+        }
+        lstUsuaris.setModel(model);
     }
 }
