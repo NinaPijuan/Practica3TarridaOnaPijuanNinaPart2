@@ -35,7 +35,7 @@ public class FrmAfegirPrestec extends JDialog {
         this.adaptador = adaptador;
         setContentPane(contentPane);
         setModal(true);
-        setSize(460, 300);
+        setSize(1000, 300);
         setLocationRelativeTo(null);
         getRootPane().setDefaultButton(btnAcceptar);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -63,6 +63,8 @@ public class FrmAfegirPrestec extends JDialog {
         AppBiblioUB.estilitzarCheckBox(chkPrestecLlarg);
         AppBiblioUB.estilitzarBotoAcceptar(btnAcceptar);
         AppBiblioUB.estilitzarBotoCancel(btnCancelar);
+
+        //
 
         btnAcceptar.setEnabled(false);
 

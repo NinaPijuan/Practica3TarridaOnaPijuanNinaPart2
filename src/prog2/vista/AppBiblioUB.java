@@ -34,10 +34,11 @@ public class AppBiblioUB extends JFrame {
     static final Color C_SEL     = new Color(0x4A, 0x6B, 0x30);
 
     // ── Fonts ───────────────────────────────────────────────────────────────
-    static final Font F_TITOL    = new Font("Georgia", Font.BOLD, 15);
-    static final Font F_COS      = new Font("Georgia", Font.PLAIN, 13);
-    static final Font F_ITALIC   = new Font("Georgia", Font.ITALIC, 12);
-    static final Font F_LLISTA   = new Font("Courier New", Font.PLAIN, 12);
+    static final Font F_TITOL    = new Font("", Font.BOLD, 15);
+
+    static final Font F_COS      = new Font("", Font.PLAIN, 13);
+    static final Font F_ITALIC   = new Font("", Font.ITALIC, 12);
+    static final Font F_LLISTA   = new Font("", Font.PLAIN, 12);
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -48,27 +49,6 @@ public class AppBiblioUB extends JFrame {
 
     public AppBiblioUB() {
         adaptador = new Adaptador();
-        // setModal(true) ??
-        // Quan obres una finestra no pots tocar l'altre??
-
-        // Utilitzar adaptador en els JDialog, passar-li l'adaptador
-        // Quan es crea el frame, passes l'adaptador
-
-        // JDialog AfegirPrestec
-        /*
-            JComboBox i JList
-            La persona selecciona l'element de la llista (ja no cal passar posició)
-            Els objectes ja tenen mètodes que quan se selecciona l'element, tenen el getSelectedIndex().
-
-            Mirar mètodes de cada element.
-
-            JComboBoxUsuari, JComboBoxExemplar
-            BotoCancelar, BotoOk
-         */
-
-        /*
-            Quan afegim usuari o exemplar, el botó afegir ha d'actualitzar les llistes.
-         */
 
         setTitle("BiblioUB — Sistema de Gestió de Biblioteca");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -237,7 +217,7 @@ public class AppBiblioUB extends JFrame {
     /** Aplica estil a una JLabel de títol */
     static void estilitzarTitol(JLabel lbl) {
         lbl.setForeground(C_OR);
-        lbl.setFont(new Font("Georgia", Font.BOLD, 16));
+        lbl.setFont(new Font("", Font.BOLD, 16));
     }
 
     /** Aplica estil a un JCheckBox */
