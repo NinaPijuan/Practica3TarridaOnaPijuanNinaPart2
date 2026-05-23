@@ -65,6 +65,19 @@
             <properties/>
             <border type="none"/>
             <children>
+              <scrollpane id="bbde1" binding="scrollUsuari">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="f8a4f" class="javax.swing.JComboBox" binding="cmbUsuari">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
               <component id="7261b" class="javax.swing.JLabel" binding="etUsuari">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -72,12 +85,6 @@
                 <properties>
                   <text value="Usuari:"/>
                 </properties>
-              </component>
-              <component id="f8a4f" class="javax.swing.JComboBox" binding="cmbUsuari">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties/>
               </component>
             </children>
           </grid>
@@ -89,20 +96,27 @@
             <properties/>
             <border type="none"/>
             <children>
+              <scrollpane id="c721b" binding="scrollExemplar">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="bf91e" class="javax.swing.JComboBox" binding="cmbExemplar">
+                    <constraints/>
+                    <properties>
+                      <model/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
               <component id="6755e" class="javax.swing.JLabel" binding="etExemplar">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Exemplar:"/>
-                </properties>
-              </component>
-              <component id="bf91e" class="javax.swing.JComboBox" binding="cmbExemplar">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <model/>
                 </properties>
               </component>
             </children>

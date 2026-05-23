@@ -3,9 +3,13 @@ package prog2.vista;
 import prog2.adaptador.Adaptador;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Finestra de diàleg per a la gestió dels exemplars de la biblioteca.
+ */
 public class FrmGestioExemplars extends JDialog {
     private JPanel contentPane;
     private JButton btnTornar;
@@ -17,14 +21,23 @@ public class FrmGestioExemplars extends JDialog {
     private JPanel panelBtns;
     private Adaptador adaptador;
 
+    /**
+     * Crea i configura la finestra de gestió d'exemplars.
+     * @param parent el JFrame principal de l'aplicació
+     * @param adaptador l'adaptador que proporciona accés al model
+     */
     public FrmGestioExemplars(JFrame parent, Adaptador adaptador) {
         super(parent);
         this.adaptador = adaptador;
+
         setContentPane(contentPane);
-        setSize(600, 540);
+        setSize(900, 620);
         setLocationRelativeTo(null);
         setTitle("Gestió d'Exemplars — BiblioUB");
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE); // els JDialogs no és EXIT_ON_CLOSE sinó això
+
+        // DISPOSE_ON_CLOSE: en tancar el diàleg s'allibera memòria però
+        // no s'atura l'aplicació (a diferència de EXIT_ON_CLOSE dels JFrame).
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         // ESTÈTICA
         // ── Tema ─────────────────────────────────────────────────────────────
@@ -44,13 +57,17 @@ public class FrmGestioExemplars extends JDialog {
         AppBiblioUB.estilitzarBotoCancel(btnTornar);
         btnTornar.setText("← Tornar");
 
-        // mostrar llista des del primer moment
+        // Mostrar llista des del primer moment abans que l'usuari faci res
         refrescarLlista();
 
+        // Obre el subdiàleg FrmAfegirExemplar de forma modal
+        // Quan l'usuari el tanca (tant si ha afegit un exemplar com si no),
+        // es refresca la llista d'exemplars que es mostra
         btnAfegir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                // Crea pestanya d'afegir exemplar, la fa modal i la fa visible (en akuest ordre!!)
+                // Creem el diàleg passant "this" (FrmGestioExemplars) com a pare,
+                // perquè així quedi centrat sobre aquesta finestra
                 FrmAfegirExemplar frmAfegirExemplar = new FrmAfegirExemplar(FrmGestioExemplars.this, adaptador);
                 frmAfegirExemplar.setModal(true);
                 frmAfegirExemplar.setVisible(true);
@@ -60,6 +77,7 @@ public class FrmGestioExemplars extends JDialog {
             }
         });
 
+        // Tanca el diàleg i torna a la finestra principal
         btnTornar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -68,7 +86,12 @@ public class FrmGestioExemplars extends JDialog {
         });
     }
 
-    // Mètode per refrescar
+    // MÈTODE AUXILIAR
+
+    /**
+     * Recarrega la llista d'exemplars des de l'adaptador i actualitza
+     * el model del JList.
+     */
     private void refrescarLlista() {
         DefaultListModel<String> model = new DefaultListModel<>();
         for (String element : adaptador.recuperarExemplars()) {

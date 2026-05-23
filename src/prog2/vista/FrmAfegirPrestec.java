@@ -3,14 +3,15 @@ package prog2.vista;
 import prog2.adaptador.Adaptador;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.List;
 
+/**
+ * Finestra de diàleg per afegir un nou préstec a la biblioteca
+ */
 public class FrmAfegirPrestec extends JDialog {
     private JPanel contentPane;
     private JButton btnAcceptar;
@@ -26,16 +27,27 @@ public class FrmAfegirPrestec extends JDialog {
     private JPanel panelUsuari;
     private JPanel panelExemplar;
     private JPanel panelChk;
+    private JScrollPane scrollUsuari;
+    private JScrollPane scrollExemplar;
 
     private Adaptador adaptador;
 
 
+    /**
+     * Crea i configura el diàleg per afegir un préstec.
+     * @param parent el JDialog pare que llança aquest diàleg
+     * @param adaptador l'adaptador que proporciona accés al model
+     */
     public FrmAfegirPrestec(JDialog parent, Adaptador adaptador) {
         super(parent);
         this.adaptador = adaptador;
         setContentPane(contentPane);
+
+        // Modal bloqueja la finestra pare fins que es tanqui
         setModal(true);
-        setSize(1000, 300);
+
+        // Amplada més gran per mostrar tot el toString (i que es vegin el botó d'acceptar)
+        setSize(1200, 380);
         setLocationRelativeTo(null);
         getRootPane().setDefaultButton(btnAcceptar);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -56,6 +68,8 @@ public class FrmAfegirPrestec extends JDialog {
         panelUsuari.setBackground(AppBiblioUB.C_PANEL);
         panelChk.setBackground(AppBiblioUB.C_PANEL);
 
+        AppBiblioUB.estilitzarScrollPane(scrollExemplar);
+        AppBiblioUB.estilitzarScrollPane(scrollUsuari);
         AppBiblioUB.estilitzarEtiqueta(etExemplar);
         AppBiblioUB.estilitzarEtiqueta(etUsuari);
         AppBiblioUB.estilitzarComboBox(cmbExemplar);
@@ -66,11 +80,16 @@ public class FrmAfegirPrestec extends JDialog {
 
         //
 
+        // Botó Acceptar desactivat al principi fins que es trien els dos elements
         btnAcceptar.setEnabled(false);
 
+        /* Per crear els ComboBox:
+            Primer s'obtenen els exemplars o usuaris de l'adaptador i s'afegeixen al model del JComboBox.
+            El primer element és "..." que indica que l'usuari encara no ha fet cap selecció (índex 0 = no vàlid).
+         */
         DefaultComboBoxModel<String> modelExemplar = (DefaultComboBoxModel<String>) cmbExemplar.getModel();
         modelExemplar.removeAllElements();
-        modelExemplar.addElement("...");
+        modelExemplar.addElement("..."); // Marcador de selecció buida
         for (String element : adaptador.recuperarExemplars()) {
             modelExemplar.addElement(element);
         }
@@ -83,6 +102,7 @@ public class FrmAfegirPrestec extends JDialog {
         }
 
         // Listeners per habilitar/deshabilitar botó
+        // Cada vegada que canvia la selecció, es recalcula si els dos tenen una selecció vàlida (índex > 0)
         cmbUsuari.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent itemEvent) {
@@ -97,29 +117,40 @@ public class FrmAfegirPrestec extends JDialog {
             }
         });
 
+        // Tanca el diàleg sense fer cap canvi
         btnCancelar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 dispose();
             }
         });
+
+        // Transmet a l'adaptador els índexs de l'exemplar i l'usuari seleccionats
+        // (es resta 1 per compensar l'element "...")
+        // Mostra un missatge informatiu o d'error segons el resultat
         btnAcceptar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                // afegir prestec + gestionar excepcions amb finestretes
                 try {
+                    // getSelectedIndex() - 1 perquè l'índex 0 és "..."
                     adaptador.afegirPrestec(cmbExemplar.getSelectedIndex() - 1, cmbUsuari.getSelectedIndex() - 1, chkPrestecLlarg.isSelected());
-                    JOptionPane.showMessageDialog(parent, "Préstec creat correctament", "", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(FrmAfegirPrestec.this, "Préstec creat correctament", "", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
+                    // FrmGestioPrestecs refresca la llista
+
                 } catch (BiblioException e) {
-                    JOptionPane.showMessageDialog(parent, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(FrmAfegirPrestec.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
 
     }
 
-    // Mètode auxiliar per activar el botó acceptar
+    // MÈTODE AUXILIAR
+
+    /** Activa o desactiva el botó "Acceptar" en funció de si s'ha seleccionat
+     * un element vàlid (índex > 0) en els dos JComboBox.
+     */
     private void actualitzarBotoAcceptar() {
         boolean usuariOk = cmbUsuari.getSelectedIndex() > 0;
         boolean exemplarOk = cmbExemplar.getSelectedIndex() > 0;

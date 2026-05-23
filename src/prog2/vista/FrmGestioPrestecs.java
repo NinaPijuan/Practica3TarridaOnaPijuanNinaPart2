@@ -5,11 +5,15 @@ import prog2.adaptador.Adaptador;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Finestra de diàleg per a la gestió dels préstecs de la biblioteca.
+ */
 public class FrmGestioPrestecs extends JDialog {
     private JPanel contentPane;
     private JButton btnTornar;
@@ -30,11 +34,17 @@ public class FrmGestioPrestecs extends JDialog {
      */
     private List<Integer> indexosReals;
 
+    /**
+     * Crea i configura la finestra de gestió de préstecs.
+     * @param parent el JFrame principal de l'aplicació
+     * @param adaptador l'adaptador que proporciona accés al model
+     */
     public FrmGestioPrestecs(JFrame parent, Adaptador adaptador) {
         super(parent);
         this.adaptador = adaptador;
+
         setContentPane(contentPane);
-        setSize(680, 540);
+        setSize(950, 640);
         setLocationRelativeTo(null);
         setTitle("Gestió de Préstecs — BiblioUB");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -60,11 +70,14 @@ public class FrmGestioPrestecs extends JDialog {
         AppBiblioUB.estilitzarCheckBox(chkNoRetornats);
         btnTornar.setText("← Tornar");
 
+        // El botó "Retornar" comença desactivat fins que s'escull un préstec a la llista
         btnRetornar.setEnabled(false);
 
-        // mostrar llista des del primer moment
+        // Mostrar llista des del primer moment
         refrescarLlista();
 
+        // El botó "Afegir" obre el subdiàleg FrmAfegirPrestec de forma modal
+        // Quan es tanca, es refresca la llista
         btnAfegir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -76,11 +89,22 @@ public class FrmGestioPrestecs extends JDialog {
                 refrescarLlista();
             }
         });
+
+        /* El botó "Retornar":
+            Obté l'índex visual seleccionat, el tradueix a índex real gràcies a
+            indexosReals, i crida l'adaptador per marcar el préstec com a retornat.
+
+            En cas de poder, mostra la confirmació, refresca la llista i desactiva el botó
+            En cas d'error, mostra el missatge corresponent
+         */
         btnRetornar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 int indexVisual = lstPrestecs.getSelectedIndex();
+
+                // Traducció de posició visual -> índex real dins la llista completa
                 int indexReal = indexosReals.get(indexVisual);
+
                 try {
                     adaptador.retornarPrestec(indexReal);
                     JOptionPane.showMessageDialog(FrmGestioPrestecs.this, "Préstec retornat",
@@ -91,6 +115,7 @@ public class FrmGestioPrestecs extends JDialog {
 
                     // Desactivem boto retornar
                     btnRetornar.setEnabled(false);
+
                 } catch (BiblioException ex) {
                     JOptionPane.showMessageDialog(FrmGestioPrestecs.this, ex.getMessage(), "Error",
                             JOptionPane.ERROR_MESSAGE);
@@ -104,12 +129,20 @@ public class FrmGestioPrestecs extends JDialog {
                 dispose();
             }
         });
+
+        // Cada vegada que l'usuari canvia la selecció a la llista, s'activa
+        // o desactiva el botó "Retornar" en funció de si hi ha algun element
+        // seleccionat
         lstPrestecs.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                // isSelectionEmpty() és false si hi ha algun element seleccionat
                 btnRetornar.setEnabled(!lstPrestecs.isSelectionEmpty());
             }
         });
+
+        // Cada vegada que l'usuari marca o desmarca la casella "Només no retornats",
+        // es refresca la llista per aplicar o eliminar el filtre
         chkNoRetornats.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -118,7 +151,13 @@ public class FrmGestioPrestecs extends JDialog {
         });
     }
 
-    // Mètode auxiliar
+    // MÈTODE AUXILIAR
+
+    /**
+     * Recarrega la llista de préstecs des de l'adaptador, aplicant el filtre
+     * de "no retornats" si la casella chkNoRetornats està marcada, i
+     * reconstrueix la llista indexosReals.
+     */
     private void refrescarLlista() {
         DefaultListModel<String> model = new DefaultListModel<>();
         indexosReals = new ArrayList<>();
@@ -126,12 +165,12 @@ public class FrmGestioPrestecs extends JDialog {
         List<String> prestecsNR = adaptador.recuperarPrestecsNoRetornats();
 
         if (chkNoRetornats.isSelected()) {
-            // Mostrem només no retornats, però guardem l'índex real de cada un
+            // Mostrem només no retornats, però guardem l'índex real de cada un dins la llista completa
             for (int i = 0; i < prestecs.size(); i++) {
                 if (prestecsNR.contains(prestecs.get(i))) {
                     model.addElement(prestecs.get(i));
 
-                    // aquest és l'índex real dins de la llista de tots els préstecs
+                    // Aquest és l'índex real dins de la llista de tots els préstecs
                     indexosReals.add(i);
                 }
             }
@@ -145,7 +184,7 @@ public class FrmGestioPrestecs extends JDialog {
 
         lstPrestecs.setModel(model);
 
-        // Desactivar quan es refresca
+        // Desactivar quan es refresca perquè el nou model elimina la selecció anterior
         btnRetornar.setEnabled(false);
     }
 }
